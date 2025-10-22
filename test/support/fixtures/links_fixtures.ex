@@ -5,14 +5,9 @@ defmodule Shortn.LinksFixtures do
   """
 
   @doc """
-  Generate a unique link short.
-  """
-  def unique_link_short, do: "some short#{System.unique_integer([:positive])}"
-
-  @doc """
   Generate a unique link url.
   """
-  def unique_link_url, do: "some url#{System.unique_integer([:positive])}"
+  def unique_link_url, do: "https://example.com/#{System.unique_integer([:positive])}"
 
   @doc """
   Generate a link.
@@ -21,8 +16,7 @@ defmodule Shortn.LinksFixtures do
     {:ok, link} =
       attrs
       |> Enum.into(%{
-        short: unique_link_short(),
-        url: unique_link_url()
+        "url" => unique_link_url()
       })
       |> Shortn.Links.create_link()
 

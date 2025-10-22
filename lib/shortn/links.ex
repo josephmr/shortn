@@ -53,8 +53,10 @@ defmodule Shortn.Links do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_link(attrs) do
-    case Repo.get_by(Link, url: attrs["url"]) do
+  def create_link(%{"url" => nil} = attrs), do: create_new_link(attrs)
+
+  def create_link(%{"url" => url} = attrs) do
+    case Repo.get_by(Link, url: url) do
       nil ->
         create_new_link(attrs)
 

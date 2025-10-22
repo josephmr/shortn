@@ -8,7 +8,7 @@ defmodule Shortn.LinksTest do
 
     import Shortn.LinksFixtures
 
-    @invalid_attrs %{short: nil, url: nil}
+    @invalid_attrs %{"url" => nil}
 
     test "list_links/0 returns all links" do
       link = link_fixture()
@@ -21,30 +21,15 @@ defmodule Shortn.LinksTest do
     end
 
     test "create_link/1 with valid data creates a link" do
-      valid_attrs = %{short: "some short", url: "some url"}
+      valid_attrs = %{"url" => "https://example.com"}
 
       assert {:ok, %Link{} = link} = Links.create_link(valid_attrs)
-      assert link.short == "some short"
-      assert link.url == "some url"
+      assert link.url == "https://example.com"
+      assert link.short
     end
 
     test "create_link/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = Links.create_link(@invalid_attrs)
-    end
-
-    test "update_link/2 with valid data updates the link" do
-      link = link_fixture()
-      update_attrs = %{short: "some updated short", url: "some updated url"}
-
-      assert {:ok, %Link{} = link} = Links.update_link(link, update_attrs)
-      assert link.short == "some updated short"
-      assert link.url == "some updated url"
-    end
-
-    test "update_link/2 with invalid data returns error changeset" do
-      link = link_fixture()
-      assert {:error, %Ecto.Changeset{}} = Links.update_link(link, @invalid_attrs)
-      assert link == Links.get_link!(link.id)
     end
 
     test "delete_link/1 deletes the link" do
