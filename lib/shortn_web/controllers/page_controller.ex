@@ -2,6 +2,6 @@ defmodule ShortnWeb.PageController do
   use ShortnWeb, :controller
 
   def home(conn, _params) do
-    render(conn, :home)
+    redirect(conn, to: ~p"/links/new")
   end
 end

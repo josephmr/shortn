@@ -18,6 +18,11 @@ defmodule ShortnWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    live "/links", LinkLive.Index, :index
+    live "/links/new", LinkLive.Form, :new
+
+    get "/:short", RedirectController, :show
   end
 
   # Other scopes may use custom stacks.
