@@ -31,10 +31,20 @@ defmodule ShortnWeb.LinkLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
+    if connected?(socket), do: Links.subscribe()
+
     {:ok,
      socket
-     |> assign(:page_title, "Listing Links")
      |> stream(:links, list_links())}
+  end
+
+  @impl true
+  def handle_info({:link_created, link}, socket) do
+    {:noreply, stream_insert(socket, :links, link)}
+  end
+
+  def handle_info({:link_deleted, link}, socket) do
+    {:noreply, stream_delete(socket, :links, link)}
   end
 
   defp list_links() do

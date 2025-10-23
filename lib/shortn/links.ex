@@ -5,8 +5,21 @@ defmodule Shortn.Links do
 
   import Ecto.Query, warn: false
   alias Shortn.Repo
-
   alias Shortn.Links.Link
+  alias Phoenix.PubSub
+
+  def subscribe() do
+    PubSub.subscribe(Shortn.PubSub, "links")
+  end
+
+  def notify({:ok, %Link{} = link} = result, event) do
+    PubSub.broadcast(Shortn.PubSub, "links", {event, link})
+    result
+  end
+
+  def notify(error, _event) do
+    error
+  end
 
   @doc """
   Returns the list of links.
@@ -71,6 +84,7 @@ defmodule Shortn.Links do
     %Link{}
     |> Link.changeset(attrs)
     |> Repo.insert()
+    |> notify(:link_created)
   end
 
   @doc """
@@ -87,6 +101,7 @@ defmodule Shortn.Links do
   """
   def delete_link(%Link{} = link) do
     Repo.delete(link)
+    |> notify(:link_deleted)
   end
 
   @doc """
