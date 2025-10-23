@@ -9,7 +9,7 @@ defmodule ShortnWeb.LinkLive.Form do
     ~H"""
     <Layouts.app flash={@flash}>
       <.form for={@form} id="link-form" phx-submit="save">
-        <.input field={@form[:url]} type="text" label="Url" />
+        <.input field={@form[:url]} type="text" label="Url" autofocus />
         <footer>
           <.button variant="primary">Shorten</.button>
         </footer>
