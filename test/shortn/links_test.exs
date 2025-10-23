@@ -8,7 +8,7 @@ defmodule Shortn.LinksTest do
 
     import Shortn.LinksFixtures
 
-    @invalid_attrs %{"url" => nil}
+    @invalid_attrs %{url: nil}
 
     test "list_links/0 returns all links" do
       link = link_fixture()
@@ -21,7 +21,7 @@ defmodule Shortn.LinksTest do
     end
 
     test "create_link/1 with valid data creates a link" do
-      valid_attrs = %{"url" => "https://example.com"}
+      valid_attrs = %{url: "https://example.com"}
 
       assert {:ok, %Link{} = link} = Links.create_link(valid_attrs)
       assert link.url == "https://example.com"

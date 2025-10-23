@@ -12,10 +12,11 @@ defmodule Shortn.Links.Link do
   @doc false
   def changeset(link, attrs) do
     link
-    |> cast(attrs, [:url, :short])
-    |> validate_required([:url, :short])
-    |> unique_constraint(:short)
+    |> cast(attrs, [:url])
+    |> validate_required([:url])
     |> unique_constraint(:url)
+    |> put_change(:short, Shortn.Shortener.generate_short_code())
+    |> unique_constraint(:short)
   end
 
   def url_changeset(link, attrs) do

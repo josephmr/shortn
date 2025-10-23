@@ -16,7 +16,7 @@ defmodule Shortn.LinksFixtures do
     {:ok, link} =
       attrs
       |> Enum.into(%{
-        "url" => unique_link_url()
+        url: unique_link_url()
       })
       |> Shortn.Links.create_link()
 

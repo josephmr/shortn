@@ -66,25 +66,26 @@ defmodule Shortn.Links do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_link(%{"url" => nil} = attrs), do: create_new_link(attrs)
+  def create_link(attrs) do
+    insert =
+      %Link{}
+      |> Link.changeset(attrs)
+      |> Repo.insert()
 
-  def create_link(%{"url" => url} = attrs) do
-    case Repo.get_by(Link, url: url) do
-      nil ->
-        create_new_link(attrs)
+    url = attrs["url"] || attrs[:url]
 
-      link ->
+    cond do
+      # If no URL provided, just insert and return error changeset
+      is_nil(url) ->
+        insert
+
+      link = Repo.get_by(Link, url: url) ->
         {:ok, link}
+
+      true ->
+        insert
+        |> notify(:link_created)
     end
-  end
-
-  def create_new_link(attrs) do
-    attrs = Map.put(attrs, "short", Shortn.Shortener.generate_short_code())
-
-    %Link{}
-    |> Link.changeset(attrs)
-    |> Repo.insert()
-    |> notify(:link_created)
   end
 
   @doc """
